@@ -1,3 +1,4 @@
-x = 1 + 2;
-y = "Hello\n\t world";
+# x = 1 + 2;
+y = "Hello world";
+print("Hello");
 # z = [ 1 2.0  "3" ];

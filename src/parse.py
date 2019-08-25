@@ -22,6 +22,10 @@ def p_statement_assignment(p):
     '''statement : assignment SEMICOLON'''
     p[0] = p[1]
 
+def p_statement_expr(p):
+    '''statement : expr SEMICOLON'''
+    p[0] = ('statement_expr', p[1])
+
 def p_assignment(p):
     '''assignment : l_value EQUAL r_value'''
     p[0] = ('assignment', p[1], p[3])
@@ -46,6 +50,26 @@ def p_expr_number(p):
     '''expr : NUMBER'''
     p[0] = ('number', p[1])
 
+def p_expr_func_call(p):
+    '''expr : func_call'''
+    p[0] = p[1]
+
+def p_func_call(p):
+    ''' func_call : ID LPAREN arg_list RPAREN'''
+    p[0] = ('func_call', p[1], p[3])
+    
+def p_arg_list(p):
+    '''arg_list : expr
+                | expr COMMA arg_list
+                | empty'''
+    if len(p) < 3:
+        p[0] = []
+    elif p[2] is None:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[2]
+        p[0].append(p[1])
+        
 def p_alg_op(p):
     '''alg_op : expr PLUS expr
                | expr MINUS expr
@@ -59,7 +83,6 @@ def p_alg_op(p):
         p[0] = ('multiply', p[1], p[3])
     if p[2] == '/':
         p[0] = ('divide', p[1], p[3])
-
 
 def p_error(p):
     print('Syntax error\n', p)

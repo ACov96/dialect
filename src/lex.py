@@ -12,6 +12,9 @@ tokens = (
     'SEMICOLON',
     'LBRACKET',
     'RBRACKET',
+    'LPAREN',
+    'RPAREN',
+    'COMMA',
 )
 
 t_ID = r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -24,6 +27,9 @@ t_EQUAL = r'='
 t_SEMICOLON = r';'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
+t_LPAREN = r'\('
+t_RPAREN = r'\)'
+t_COMMA = r','
 
 def t_NUMBER(t):
     r'[0-9]+(\.[0-9]+)?'
