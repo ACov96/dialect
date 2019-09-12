@@ -1,18 +1,4 @@
-class Context:
-    def __init__(self):
-        self.parent = None
-        self._context = {}
-
-    def get(self, key):
-        if key in self._context:
-            return self._context[key]
-        elif self.parent is not None:
-            return self.parent.get(key)
-        else:
-            return ('error', 'No key %s' % key)
-
-    def set(self, key, value):
-        self._context[key] = value
+from stdlib import STDLIB
 
 def eval(ctx, statements):
     for statement in statements:
@@ -32,5 +18,13 @@ def eval_expr(ctx, expr):
         return expr
     elif expr[0] == 'number':
         return expr
+    elif expr[0] == 'list':
+        return ('list', [eval_expr(ctx, el) for el in expr[1]])
     elif expr[0] == 'func_call':
-        print(expr)
+        return eval_func_call(ctx, expr)
+    elif expr[0] == 'identifier':
+        return eval_expr(ctx, ctx.get(expr[1]))
+
+def eval_func_call(ctx, expr):
+    if expr[1] in STDLIB:
+        return STDLIB[expr[1]](ctx, expr[2])

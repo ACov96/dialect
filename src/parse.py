@@ -54,6 +54,9 @@ def p_expr_func_call(p):
     '''expr : func_call'''
     p[0] = p[1]
 
+def p_expr_id(p):
+    '''expr : ID'''
+    p[0] = ('identifier', p[1])
 def p_func_call(p):
     ''' func_call : ID LPAREN arg_list RPAREN'''
     p[0] = ('func_call', p[1], p[3])
@@ -87,6 +90,11 @@ def p_alg_op(p):
     if p[2] == '/':
         p[0] = ('divide', p[1], p[3])
 
+
+def p_expr_list(p):
+    '''expr : LBRACKET arg_list RBRACKET'''
+    p[0] = ('list', p[2])
+
 def p_error(p):
     print('Syntax error\n', p)
 
@@ -95,5 +103,6 @@ def parse(file_name):
         file_content = f.read()
         lexer = new_lexer()
         parser = yacc.yacc()
-        return parser.parse(file_content)
-    
+        statements = parser.parse(file_content)
+        statements.reverse()
+        return statements

@@ -14,11 +14,14 @@ tokens = (
     'RBRACKET',
     'LPAREN',
     'RPAREN',
+    'LBRACE',
+    'RBRACE',
     'COMMA',
+    'FUN',
 )
 
-t_ID = r'[a-zA-Z_][a-zA-Z_0-9]*'
-t_STRING = r'".*"'
+t_FUN = r'fun'
+t_ID = r'[a-z_][a-z_0-9]*'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_MULTIPLY = r'\*'
@@ -30,10 +33,17 @@ t_RBRACKET = r'\]'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_COMMA = r','
+t_LBRACE = r'\{'
+t_RBRACE = r'\}'
 
 def t_NUMBER(t):
     r'[0-9]+(\.[0-9]+)?'
     t.value = float(t.value)
+    return t
+
+def t_STRING(t):
+    r'".*"'
+    t.value = t.value.replace('"', '')
     return t
 
 def t_COMMENT(t):
