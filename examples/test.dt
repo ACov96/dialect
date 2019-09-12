@@ -1,4 +1,5 @@
 # x = 1 + 2;
 y = "Hello world";
-print("Hello");
+# print("Hello world", 1);
+print();
 # z = [ 1 2.0  "3" ];

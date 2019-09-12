@@ -58,18 +58,21 @@ def p_func_call(p):
     ''' func_call : ID LPAREN arg_list RPAREN'''
     p[0] = ('func_call', p[1], p[3])
     
-def p_arg_list(p):
-    '''arg_list : expr
-                | expr COMMA arg_list
-                | empty'''
-    if len(p) < 3:
-        p[0] = []
-    elif p[2] is None:
-        p[0] = [p[1]]
+def p_arg_list_empty(p):
+    '''arg_list : empty'''
+    p[0] = []
+
+def p_arg_list_single(p):
+    '''arg_list : expr'''
+    p[0] = [p[1]]
+
+def p_arg_list_multi(p):
+    '''arg_list : expr COMMA arg_list'''
+    if len(p[3]) > 0:
+        p[0] = [p[1]] + p[3]
     else:
-        p[0] = p[2]
-        p[0].append(p[1])
-        
+        p[0] = [p[1]]
+       
 def p_alg_op(p):
     '''alg_op : expr PLUS expr
                | expr MINUS expr
