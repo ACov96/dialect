@@ -4,6 +4,8 @@ tokens = (
     'NUMBER',
     'ID',
     'STRING',
+    'BOOL',
+    'NULL',
     'PLUS',
     'MINUS',
     'MULTIPLY',
@@ -22,6 +24,7 @@ tokens = (
 )
 
 t_FUN = r'fun'
+t_NULL = r'null'
 t_ID = r'[a-z_][a-z_0-9]*'
 t_PLUS = r'\+'
 t_MINUS = r'-'
@@ -47,6 +50,13 @@ def t_STRING(t):
     r'\"(\\.|[^"\\])*\"'
     t.value = t.value.replace('"', '')
     return t
+
+def t_BOOL(t):
+    r'(true|false)'
+    if t.value == 'true':
+        t.value = True
+    else:
+        t.value = False
 
 def t_COMMENT(t):
     r'\#.*'

@@ -11,7 +11,18 @@ def eval_statement(ctx, statement):
         eval_expr(ctx, statement[1])
 
 def eval_assignment(ctx, assignment):
-    ctx.set(assignment[1], eval_expr(ctx, assignment[2]))
+    if assignment[1][0] == 'identifier':
+        ctx.set(assignment[1], eval_expr(ctx, assignment[2]))
+    elif assignment[1][0] == 'record':
+        target = eval_expr(ctx, assignment[1][1])
+        fields = [eval_expr(ctx, field)[1] for field in assignment[1][2]]
+        for i in range(len(fields)):
+            if i == len(fields) - 1:
+                # We are on the last field
+                target[1][int(fields[i]) if isinstance(fields[i], float) else fields[i]] = eval_expr(ctx, assignment[2])
+            else:
+                target = target[1][int(fields[i]) if isinstance(fields[i], float) else fields[i]]
+        print('TARGET', target[1], hex(id(target[1])))
 
 def eval_expr(ctx, expr):
     # print('EVALUATING EXPRESSION', expr)

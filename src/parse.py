@@ -3,6 +3,11 @@ import ply.lex as l
 from lex import tokens, new_lexer
 from util import make_obj
 
+precedence = (
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'MULTIPLY', 'DIVIDE'),
+)
+
 def p_statement_list(p):
     '''statement_list : statement statement_list
                       | empty'''
@@ -35,9 +40,21 @@ def p_r_value(p):
     '''r_value : expr'''
     p[0] = p[1]
 
-def p_l_value(p):
+def p_l_value_id(p):
     '''l_value : ID'''
     p[0] = ('identifier', p[1])
+
+def p_l_value_record(p):
+    '''l_value : ID fields'''
+    p[0] = ('record', ('identifier', p[1]), p[2])
+
+def p_fields_single(p):
+    '''fields : LBRACKET expr RBRACKET'''
+    p[0] = [p[2]]
+
+def p_fields_multi(p):
+    '''fields : LBRACKET expr RBRACKET fields'''
+    p[0] = [p[2]] + p[4]
 
 def p_expr(p):
     '''expr : alg_op'''
@@ -51,6 +68,10 @@ def p_expr_number(p):
     '''expr : NUMBER'''
     p[0] = ('number', p[1])
 
+def p_expr_bool(p):
+    '''expr : BOOL'''
+    p[0] = ('bool', p[1])
+    
 def p_expr_func_call(p):
     '''expr : func_call'''
     p[0] = p[1]

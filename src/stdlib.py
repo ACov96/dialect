@@ -11,6 +11,8 @@ def _print(ctx, args):
             return str(x)
         elif isinstance(x, str):
             return '"{}"'.format(x)
+        elif isinstance(x, bool):
+            return 'true' if x else 'false'
         elif isinstance(x, dict):
             key_vals = ['{} : {}'.format(key, x[key]) for key in x]
             return '{{ {} }}'.format(', '.join(key_vals))
