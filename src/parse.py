@@ -58,6 +58,7 @@ def p_expr_func_call(p):
 def p_expr_id(p):
     '''expr : ID'''
     p[0] = ('identifier', p[1])
+
 def p_func_call(p):
     ''' func_call : ID LPAREN arg_list RPAREN'''
     p[0] = ('func_call', p[1], p[3])
@@ -110,6 +111,10 @@ def p_record_list_multi(p):
 def p_record_list_empty(p):
     '''record_list : empty'''
     p[0] = []
+
+def p_expr_access(p):
+    '''expr : expr LBRACKET expr RBRACKET'''
+    p[0] = ('access', p[1], p[3])
 
 def p_error(p):
     print('Syntax error\n', p)

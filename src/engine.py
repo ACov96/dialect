@@ -14,6 +14,7 @@ def eval_assignment(ctx, assignment):
     ctx.set(assignment[1], eval_expr(ctx, assignment[2]))
 
 def eval_expr(ctx, expr):
+    # print('EVALUATING EXPRESSION', expr)
     if expr[0] == 'string':
         return expr
     elif expr[0] == 'number':
@@ -26,7 +27,21 @@ def eval_expr(ctx, expr):
         return eval_func_call(ctx, expr)
     elif expr[0] == 'identifier':
         return eval_expr(ctx, ctx.get(expr[1]))
+    elif expr[0] == 'access':
+        return eval_access(ctx, expr)
 
+def eval_access(ctx, expr):
+    target = eval_expr(ctx, expr[1])
+    key = eval_expr(ctx, expr[2])
+    if target[0] == 'list':
+        target = target[1]
+        key = int(key[1])
+    else:
+        target = target[1]
+        key = key[1]
+    print(target, key, target[key])
+    return target[key]
+    
 def eval_func_call(ctx, expr):
     if expr[1] in STDLIB:
         return STDLIB[expr[1]](ctx, expr[2])
