@@ -39,7 +39,6 @@ def eval_access(ctx, expr):
     else:
         target = target[1]
         key = key[1]
-    print(target, key, target[key])
     return target[key]
     
 def eval_func_call(ctx, expr):
