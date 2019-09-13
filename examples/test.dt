@@ -1,5 +1,6 @@
-y = "Hello world";
-x = y;
-a = [ 1, 2, 3 ];
-z = [ 1, 2.5, "3", x, a ];
+z = { a: 1 };
+# y = "Hello world";
+# x = y;
+# a = [ 1, 2, 3 ];
+# z = [ 1, 2.5, "3", x, a ];
 print(z);

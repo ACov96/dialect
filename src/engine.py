@@ -20,6 +20,8 @@ def eval_expr(ctx, expr):
         return expr
     elif expr[0] == 'list':
         return ('list', [eval_expr(ctx, el) for el in expr[1]])
+    elif expr[0] == 'object':
+        return ('object', init_obj_fields(ctx, expr[1]))
     elif expr[0] == 'func_call':
         return eval_func_call(ctx, expr)
     elif expr[0] == 'identifier':
@@ -28,3 +30,8 @@ def eval_expr(ctx, expr):
 def eval_func_call(ctx, expr):
     if expr[1] in STDLIB:
         return STDLIB[expr[1]](ctx, expr[2])
+
+def init_obj_fields(ctx, obj):
+    for key in obj:
+        obj[key] = eval_expr(ctx, obj[key])
+    return obj

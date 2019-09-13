@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 import ply.lex as l
 from lex import tokens, new_lexer
+from util import make_obj
 
 def p_statement_list(p):
     '''statement_list : statement statement_list
@@ -90,10 +91,25 @@ def p_alg_op(p):
     if p[2] == '/':
         p[0] = ('divide', p[1], p[3])
 
-
 def p_expr_list(p):
     '''expr : LBRACKET arg_list RBRACKET'''
     p[0] = ('list', p[2])
+
+def p_expr_object(p):
+    '''expr : LBRACE record_list RBRACE'''
+    p[0] = ('object', make_obj(p[2]))
+
+def p_record_list_single(p):
+    '''record_list : ID COLON expr'''
+    p[0] = [(p[1], p[3])]
+
+def p_record_list_multi(p):
+    '''record_list : ID COLON expr COMMA record_list'''
+    p[0] = [(p[1], p[3])] + p[5]
+
+def p_record_list_empty(p):
+    '''record_list : empty'''
+    p[0] = []
 
 def p_error(p):
     print('Syntax error\n', p)

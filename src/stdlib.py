@@ -1,3 +1,4 @@
+from copy import deepcopy
 from context import Context
 
 def _print(ctx, args):
@@ -10,14 +11,35 @@ def _print(ctx, args):
             return str(x)
         elif isinstance(x, str):
             return '"{}"'.format(x)
+        elif isinstance(x, dict):
+            print (x)
+            return '\{{}\}'.format(', '.join(['{} : {}'.format(key, val) for key, val in x]))
         return x
 
     def minify_list(l):
+        l = deepcopy(l)
         mini = [minify_list(el[1]) if el[0] == 'list' else format_str(el[1]) for el in l]
         return '[{}]'.format(', '.join(mini))
 
+    def minify_dict(d):
+        d = deepcopy(d)
+        for key in d:
+            if d[key][0] == 'object':
+                d[key] = minify_dict(d[key])
+            elif d[key][0] == 'list':
+                d[key] = minify_list(d[key])
+            elif d[key][0] == 'number' and d[key][1].is_integer():
+                d[key] = int(d[key][1])
+            else:
+                d[key] = d[key][1]
+        return format_str(d)
+                
+
     evaluated_args = [eval_expr(ctx, arg)[1] for arg in args]
-    evaluated_args = [minify_list(arg) if isinstance(arg, list) else format_str(arg) for arg in evaluated_args]
+    evaluated_args = [minify_list(arg) if isinstance(arg, list) else arg for arg in evaluated_args]
+    evaluated_args = [minify_dict(arg) if isinstance(arg, dict) else arg for arg in evaluated_args]
+    evaluated_args = [format_str(arg) for arg in evaluated_args]
+    # print(evaluated_args)
     print(' '.join(evaluated_args))
         
 STDLIB = {
