@@ -1,9 +1,19 @@
+import sys
+from pprint import pprint
 import ply.lex as l
 
+reserved = {
+    'if': 'IF',
+    'elif': 'ELIF',
+    'else': 'ELSE',
+}
+
 tokens = (
+    'IF',
+    'ELIF',
+    'ELSE',
     'NUMBER',
     'BOOL',
-    'ID',
     'STRING',
     'NULL',
     'PLUS',
@@ -19,13 +29,11 @@ tokens = (
     'LBRACE',
     'RBRACE',
     'COMMA',
-    'FUN',
     'COLON',
+    'ID',
 )
 
-t_FUN = r'fun'
 t_NULL = r'null'
-t_ID = r'[a-z_][a-z_0-9]*'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_MULTIPLY = r'\*'
@@ -63,7 +71,16 @@ def t_COMMENT(t):
     r'\#.*'
     pass
 
-t_ignore = ' \t\r\n'
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
+def t_ID(t):
+    r'[a-z_][a-z_0-9]*'
+    t.type = reserved.get(t.value, 'ID')
+    return t
+    
+t_ignore = ' \t'
 
 def t_error(t):
     print('Illegal character', t.value[0])
@@ -84,3 +101,6 @@ def lex(file_name):
 
 def new_lexer():
     return l.lex()
+
+if __name__ == '__main__':
+    pprint(lex(sys.argv[1]))

@@ -8,8 +8,8 @@ def main(argv):
     ast = parse(argv[0])
     ctx = Context()
     eval(ctx, ast)
-    x = ctx._context['l'][1]
-    print(x, hex(id(x)))
+    # x = ctx._context['l'][1]
+    # print(x, hex(id(x)))
     # pprint(hex(id(ctx._context['l'][1][2][1][0])))
 
 if __name__ == '__main__':

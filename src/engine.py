@@ -1,12 +1,15 @@
+from context import Context
 from stdlib import STDLIB
 
 def eval(ctx, statements):
     for statement in statements:
         eval_statement(ctx, statement)
-            
+
 def eval_statement(ctx, statement):
     if statement[0] == 'assignment':
         eval_assignment(ctx, statement)
+    elif statement[0] == 'conditional':
+        eval_conditional(ctx, statement)
     elif statement[0] == 'statement_expr':
         eval_expr(ctx, statement[1])
 
@@ -62,3 +65,12 @@ def init_obj_fields(ctx, obj):
     for key in obj:
         obj[key] = eval_expr(ctx, obj[key])
     return obj
+
+def eval_conditional(ctx, conditional):
+    evaluated = False
+    statements = conditional[1]
+    for condition, branch in statements:
+        condition = eval_expr(ctx, condition)
+        if condition[1]:
+            new_ctx = Context(parent=ctx)
+            return eval(new_ctx, branch)

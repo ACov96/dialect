@@ -1,6 +1,6 @@
 class Context:
-    def __init__(self):
-        self.parent = None
+    def __init__(self, parent=None):
+        self.parent = parent
         self._context = {}
 
     def get(self, key):

@@ -8,17 +8,17 @@ precedence = (
     ('left', 'MULTIPLY', 'DIVIDE'),
 )
 
+start = 'statement_list'
+
 def p_statement_list(p):
     '''statement_list : statement statement_list
                       | empty'''
     if p[1] is None:
-        return
+        return []
     if len(p) < 3 or p[2] is None:
         p[0] = [p[1]]
     else:
-        p[2].append(p[1])
-        p[0] = p[2]
-    # p[0] = p[2].append(p[1]) if len(p) < 3 else [p[1]]
+        p[0] = [p[1]] + p[2]
 
 def p_empty(p):
     '''empty :'''
@@ -28,13 +28,46 @@ def p_statement_assignment(p):
     '''statement : assignment SEMICOLON'''
     p[0] = p[1]
 
+def p_statement_conditional(p):
+    '''statement : conditional'''
+    p[0] = p[1]
+
 def p_statement_expr(p):
     '''statement : expr SEMICOLON'''
     p[0] = ('statement_expr', p[1])
 
+def p_statement_test(p):
+    '''statement : test'''
+    p[0] = ('statement_expr', ('bool', True))
+
+def p_test(p):
+    '''test : IF'''
+    p[0] = p[1]
+
 def p_assignment(p):
     '''assignment : l_value EQUAL r_value'''
     p[0] = ('assignment', p[1], p[3])
+
+def p_conditional_full(p):
+    '''conditional : IF LPAREN expr RPAREN LBRACE statement_list RBRACE conditional_elif conditional_else'''
+    conditions = [(p[3], p[6])] + p[8] + p[9]
+    p[0] = ('conditional', conditions)
+
+def p_conditional_elif(p):
+    '''conditional_elif : ELIF LPAREN expr RPAREN LBRACE statement_list RBRACE conditional_elif'''
+    p[0] = [(p[3], p[6])] + p[8]
+
+def p_conditional_elif_empty(p):
+    '''conditional_elif : empty'''
+    p[0] = []
+
+def p_conditional_else(p):
+    '''conditional_else : ELSE LBRACE statement_list RBRACE'''
+    p[0] = [(('bool', True), p[3])]
+
+def p_conditional_else_empty(p):
+    '''conditional_else : empty'''
+    p[0] = []
 
 def p_r_value(p):
     '''r_value : expr'''
@@ -146,5 +179,4 @@ def parse(file_name):
         lexer = new_lexer()
         parser = yacc.yacc()
         statements = parser.parse(file_content)
-        statements.reverse()
         return statements

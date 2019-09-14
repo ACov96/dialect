@@ -1,2 +1,10 @@
-l = true;
-print(l);
+if (false) {
+  x = 1;
+  print(x);
+} elif (false) {
+  print("Other");
+} elif (false) {
+  print("Another");
+} else {
+  print("World");
+}
