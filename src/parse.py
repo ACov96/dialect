@@ -45,16 +45,8 @@ def p_statement_loop(p):
     p[0] = p[1]
 
 def p_loop(p):
-    '''loop : LOOP LBRACE statement_list RBRACE'''
-    p[0] = ('loop', p[3])
-
-def p_statement_break(p):
-    '''statement : break SEMICOLON'''
-    p[0] = p[1]
-
-def p_break(p):
-    '''break : BREAK'''
-    p[0] = ('break',)
+    '''loop : WHILE LPAREN expr RPAREN LBRACE statement_list RBRACE'''
+    p[0] = ('loop', p[3], p[6])
 
 def p_statement_fun_def(p):
     '''statement : fun_def'''

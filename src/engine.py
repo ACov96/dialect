@@ -33,7 +33,6 @@ def eval_assignment(ctx, assignment):
                 target[1][int(fields[i]) if isinstance(fields[i], float) else fields[i]] = eval_expr(ctx, assignment[2])
             else:
                 target = target[1][int(fields[i]) if isinstance(fields[i], float) else fields[i]]
-        print('TARGET', target[1], hex(id(target[1])))
 
 def eval_expr(ctx, expr):
     # print('EVALUATING EXPRESSION', expr)
@@ -105,15 +104,11 @@ def eval_conditional(ctx, conditional):
             return eval(new_ctx, branch)
 
 def eval_loop(ctx, loop):
-    looping = True
-    statements = loop[1]
+    condition = loop[1]
+    statements = loop[2]
     new_ctx = Context(parent=ctx)
-    while looping:
-        for statement in statements:
-            if statement[0] == 'break':
-                looping = False
-            else:
-                eval_statement(new_ctx, statement)
+    while eval_expr(ctx, condition)[1]:
+        eval(ctx, statements)
 
 def eval_fun_def(ctx, definition):
     _, fun_id, args, body = definition
@@ -161,4 +156,4 @@ def eval_logic_op(ctx, expr):
     elif expr[0] == 'or':
         return ('bool', eval_expr(ctx, expr[1]) or eval_expr(ctx, expr[2]))
     else:
-        return ('bool', not eval_expr(ctx, expr[1]))
+        return ('bool', not eval_expr(ctx, expr[1])[1])
