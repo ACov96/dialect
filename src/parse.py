@@ -56,6 +56,26 @@ def p_break(p):
     '''break : BREAK'''
     p[0] = ('break',)
 
+def p_statement_fun_def(p):
+    '''statement : fun_def'''
+    p[0] = p[1]
+
+def p_fun_def(p):
+    '''fun_def : FUN ID LPAREN id_list RPAREN LBRACE statement_list RBRACE'''
+    p[0] = ('fun_def', p[2], p[4], p[7])
+
+def p_id_list_single(p):
+    '''id_list : ID'''
+    p[0] = [p[1]]
+
+def p_id_list_multi(p):
+    '''id_list : ID COMMA id_list'''
+    p[0] = [p[1]] + p[3]
+
+def p_id_list_empty(p):
+    '''id_list : empty'''
+    p[0] = []
+
 def p_conditional_full(p):
     '''conditional : IF LPAREN expr RPAREN LBRACE statement_list RBRACE conditional_elif conditional_else'''
     conditions = [(p[3], p[6])] + p[8] + p[9]
@@ -112,6 +132,10 @@ def p_expr_number(p):
 def p_expr_bool(p):
     '''expr : BOOL'''
     p[0] = ('bool', p[1])
+
+def p_expr_null(p):
+    '''expr : NULL'''
+    p[0] = ('null', None)
     
 def p_expr_func_call(p):
     '''expr : func_call'''

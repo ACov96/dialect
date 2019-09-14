@@ -10,6 +10,9 @@ reserved = {
     'end': 'END',
     'exit': 'EXIT',
     'break': 'BREAK',
+    'fun': 'FUN',
+    'return': 'RETURN',
+    'null': 'NULL',
 }
 
 tokens = (
@@ -19,6 +22,8 @@ tokens = (
     'LOOP',
     'END',
     'EXIT',
+    'FUN',
+    'RETURN',
     'BREAK',
     'NUMBER',
     'BOOL',

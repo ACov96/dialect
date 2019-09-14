@@ -12,6 +12,8 @@ def eval_statement(ctx, statement):
         eval_conditional(ctx, statement)
     elif statement[0] == 'loop':
         eval_loop(ctx, statement)
+    elif statement[0] == 'fun_def':
+        eval_fun_def(ctx, statement)
     elif statement[0] == 'statement_expr':
         eval_expr(ctx, statement[1])
 
@@ -45,6 +47,10 @@ def eval_expr(ctx, expr):
         return eval_expr(ctx, ctx.get(expr[1]))
     elif expr[0] == 'bool':
         return expr
+    elif expr[0] == 'null':
+        return expr
+    elif expr[0] == 'fun':
+        return expr
     elif expr[0] == 'access':
         return eval_access(ctx, expr)
 
@@ -62,6 +68,17 @@ def eval_access(ctx, expr):
 def eval_func_call(ctx, expr):
     if expr[1] in STDLIB:
         return STDLIB[expr[1]](ctx, expr[2])
+    else:
+        new_ctx = Context(parent=ctx)
+        _, fun_id, args = expr
+        fun = ctx.get(fun_id)
+        _, targets, body = fun
+        args = [eval_expr(ctx, arg) for arg in args]
+        if len(targets) > len(args):
+            args += [('null', None)] * (len(targets) - len(args))
+        for target, arg in zip(targets, args):
+            new_ctx.set(('identifier', target), arg)
+        return eval(new_ctx, body)
 
 def init_obj_fields(ctx, obj):
     for key in obj:
@@ -87,3 +104,7 @@ def eval_loop(ctx, loop):
                 looping = False
             else:
                 eval_statement(new_ctx, statement)
+
+def eval_fun_def(ctx, definition):
+    _, fun_id, args, body = definition
+    eval_assignment(ctx, ('assignment', ('identifier', fun_id), ('fun', args, body)))
