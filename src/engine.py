@@ -61,6 +61,8 @@ def eval_expr(ctx, expr):
         return eval_alg_op(ctx, expr)
     elif expr[0] in COMP_OPS:
         return eval_comp_op(ctx, expr)
+    elif expr[0] in LOGIC_OPS:
+        return eval_logic_op(ctx, expr)
 
 def eval_access(ctx, expr):
     target = eval_expr(ctx, expr[1])
@@ -152,3 +154,11 @@ def eval_comp_op(ctx, expr):
     elif expr[0] == 'lte':
         data = left <= right
     return ('bool', data)
+
+def eval_logic_op(ctx, expr):
+    if expr[0] == 'and':
+        return ('bool', eval_expr(ctx, expr[1]) and eval_expr(ctx, expr[2]))
+    elif expr[0] == 'or':
+        return ('bool', eval_expr(ctx, expr[1]) or eval_expr(ctx, expr[2]))
+    else:
+        return ('bool', not eval_expr(ctx, expr[1]))

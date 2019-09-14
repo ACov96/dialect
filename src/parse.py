@@ -210,29 +210,45 @@ def p_expr_comp_op(p):
     '''expr : comp_op'''
     p[0] = p[1]
 
-def p_log_op_eq(p):
+def p_comp_op_eq(p):
     '''comp_op : expr EQUAL EQUAL expr'''
     p[0] = ('eq', p[1], p[4])
 
-def p_log_op_neq(p):
+def p_comp_op_neq(p):
     '''comp_op : expr BANG EQUAL expr'''
     p[0] = ('neq', p[1], p[4])
 
-def p_log_op_gt(p):
+def p_comp_op_gt(p):
     '''comp_op : expr GT expr'''
     p[0] = ('gt', p[1], p[3])
     
-def p_log_op_gte(p):
+def p_comp_op_gte(p):
     '''comp_op : expr GT EQUAL expr'''
     p[0] = ('gte', p[1], p[4])
 
-def p_log_op_lt(p):
+def p_comp_op_lt(p):
     '''comp_op : expr LT expr'''
     p[0] = ('lt', p[1], p[3])
 
-def p_log_op_lte(p):
+def p_comp_op_lte(p):
     '''comp_op : expr LT EQUAL expr'''
     p[0] = ('lte', p[1], p[4])
+
+def p_expr_log_op(p):
+    '''expr : log_op'''
+    p[0] = p[1]
+
+def p_log_op_and(p):
+    '''log_op : expr AND expr'''
+    p[0] = ('and', p[1], p[3])
+
+def p_log_op_or(p):
+    '''log_op : expr OR expr'''
+    p[0] = ('or', p[1], p[3])
+
+def p_log_op_not(p):
+    '''log_op : NOT expr'''
+    p[0] = ('not', p[2])
 
 def p_error(p):
     print('Syntax error\n', p)

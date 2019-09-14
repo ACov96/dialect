@@ -13,6 +13,9 @@ reserved = {
     'fun': 'FUN',
     'return': 'RETURN',
     'null': 'NULL',
+    'and': 'AND',
+    'or': 'OR',
+    'not': 'NOT',
 }
 
 tokens = (
@@ -23,6 +26,9 @@ tokens = (
     'END',
     'EXIT',
     'FUN',
+    'AND',
+    'OR',
+    'NOT',
     'RETURN',
     'BREAK',
     'NUMBER',
