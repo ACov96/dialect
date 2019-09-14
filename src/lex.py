@@ -6,12 +6,20 @@ reserved = {
     'if': 'IF',
     'elif': 'ELIF',
     'else': 'ELSE',
+    'loop': 'LOOP',
+    'end': 'END',
+    'exit': 'EXIT',
+    'break': 'BREAK',
 }
 
 tokens = (
     'IF',
     'ELIF',
     'ELSE',
+    'LOOP',
+    'END',
+    'EXIT',
+    'BREAK',
     'NUMBER',
     'BOOL',
     'STRING',

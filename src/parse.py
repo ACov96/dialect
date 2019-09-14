@@ -36,17 +36,25 @@ def p_statement_expr(p):
     '''statement : expr SEMICOLON'''
     p[0] = ('statement_expr', p[1])
 
-def p_statement_test(p):
-    '''statement : test'''
-    p[0] = ('statement_expr', ('bool', True))
-
-def p_test(p):
-    '''test : IF'''
-    p[0] = p[1]
-
 def p_assignment(p):
     '''assignment : l_value EQUAL r_value'''
     p[0] = ('assignment', p[1], p[3])
+
+def p_statement_loop(p):
+    '''statement : loop'''
+    p[0] = p[1]
+
+def p_loop(p):
+    '''loop : LOOP LBRACE statement_list RBRACE'''
+    p[0] = ('loop', p[3])
+
+def p_statement_break(p):
+    '''statement : break SEMICOLON'''
+    p[0] = p[1]
+
+def p_break(p):
+    '''break : BREAK'''
+    p[0] = ('break',)
 
 def p_conditional_full(p):
     '''conditional : IF LPAREN expr RPAREN LBRACE statement_list RBRACE conditional_elif conditional_else'''

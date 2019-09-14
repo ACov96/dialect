@@ -1,10 +1,7 @@
-if (false) {
-  x = 1;
-  print(x);
-} elif (false) {
-  print("Other");
-} elif (false) {
-  print("Another");
-} else {
-  print("World");
+loop {
+     x = 1;
+     print(x);
+     break;
 }
+
+print(x);

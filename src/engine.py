@@ -10,6 +10,8 @@ def eval_statement(ctx, statement):
         eval_assignment(ctx, statement)
     elif statement[0] == 'conditional':
         eval_conditional(ctx, statement)
+    elif statement[0] == 'loop':
+        eval_loop(ctx, statement)
     elif statement[0] == 'statement_expr':
         eval_expr(ctx, statement[1])
 
@@ -74,3 +76,14 @@ def eval_conditional(ctx, conditional):
         if condition[1]:
             new_ctx = Context(parent=ctx)
             return eval(new_ctx, branch)
+
+def eval_loop(ctx, loop):
+    looping = True
+    statements = loop[1]
+    new_ctx = Context(parent=ctx)
+    while looping:
+        for statement in statements:
+            if statement[0] == 'break':
+                looping = False
+            else:
+                eval_statement(new_ctx, statement)
