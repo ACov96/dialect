@@ -38,6 +38,8 @@ def eval_expr(ctx, expr):
         return eval_func_call(ctx, expr)
     elif expr[0] == 'identifier':
         return eval_expr(ctx, ctx.get(expr[1]))
+    elif expr[0] == 'bool':
+        return expr
     elif expr[0] == 'access':
         return eval_access(ctx, expr)
 

@@ -2,9 +2,9 @@ import ply.lex as l
 
 tokens = (
     'NUMBER',
+    'BOOL',
     'ID',
     'STRING',
-    'BOOL',
     'NULL',
     'PLUS',
     'MINUS',
@@ -57,6 +57,7 @@ def t_BOOL(t):
         t.value = True
     else:
         t.value = False
+    return t
 
 def t_COMMENT(t):
     r'\#.*'
