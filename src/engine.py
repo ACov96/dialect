@@ -2,7 +2,7 @@ from context import Context
 from stdlib import STDLIB
 
 ALG_OPS = {'addition', 'subtraction', 'multiply', 'divide'}
-COMP_OPS = {'eq', 'ne', 'gt', 'gte', 'lt', 'lte'}
+COMP_OPS = {'eq', 'neq', 'gt', 'gte', 'lt', 'lte'}
 LOGIC_OPS = {'and', 'or', 'not'}
 
 def eval(ctx, statements):
@@ -59,6 +59,8 @@ def eval_expr(ctx, expr):
         return eval_access(ctx, expr)
     elif expr[0] in ALG_OPS:
         return eval_alg_op(ctx, expr)
+    elif expr[0] in COMP_OPS:
+        return eval_comp_op(ctx, expr)
 
 def eval_access(ctx, expr):
     target = eval_expr(ctx, expr[1])
@@ -133,3 +135,20 @@ def eval_alg_op(ctx, expr):
         return ('number', data)
     else:
         return ('null', None)
+
+def eval_comp_op(ctx, expr):
+    left = eval_expr(ctx, expr[1])[1]
+    right = eval_expr(ctx, expr[2])[1]
+    if expr[0] == 'eq':
+        data = left == right
+    elif expr[0] == 'neq':
+        data = left != right
+    elif expr[0] == 'gt':
+        data = left > right
+    elif expr[0] == 'lt':
+        data = left < right
+    elif expr[0] == 'gte':
+        data = left >= right
+    elif expr[0] == 'lte':
+        data = left <= right
+    return ('bool', data)

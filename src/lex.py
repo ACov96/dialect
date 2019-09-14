@@ -43,6 +43,9 @@ tokens = (
     'RBRACE',
     'COMMA',
     'COLON',
+    'BANG',
+    'GT',
+    'LT',
     'ID',
 )
 
@@ -61,6 +64,9 @@ t_COMMA = r','
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
 t_COLON = r':'
+t_BANG = r'!'
+t_GT = r'>'
+t_LT = r'<'
 
 def t_NUMBER(t):
     r'[0-9]+(\.[0-9]+)?'
