@@ -2,6 +2,7 @@ class Context:
     def __init__(self, parent=None):
         self.parent = parent
         self._context = {}
+        self.ret_val = None
 
     def get(self, key):
         if key in self._context:
@@ -13,3 +14,6 @@ class Context:
 
     def set(self, key, value):
         self._context[key[1]] = value
+
+    def flag_return(self, val):
+        self.ret_val = val

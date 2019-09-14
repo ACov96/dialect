@@ -7,19 +7,24 @@ LOGIC_OPS = {'and', 'or', 'not'}
 
 def eval(ctx, statements):
     for statement in statements:
-        eval_statement(ctx, statement)
+        if statement[0] == 'return':
+            ret = eval_expr(ctx, statement[1])
+            ctx.flag_return(ret)
+            return ret
+        else:
+            eval_statement(ctx, statement)
 
 def eval_statement(ctx, statement):
     if statement[0] == 'assignment':
-        eval_assignment(ctx, statement)
+        return eval_assignment(ctx, statement)
     elif statement[0] == 'conditional':
-        eval_conditional(ctx, statement)
+        return eval_conditional(ctx, statement)
     elif statement[0] == 'loop':
-        eval_loop(ctx, statement)
+        return eval_loop(ctx, statement)
     elif statement[0] == 'fun_def':
-        eval_fun_def(ctx, statement)
+        return eval_fun_def(ctx, statement)
     elif statement[0] == 'statement_expr':
-        eval_expr(ctx, statement[1])
+        return eval_expr(ctx, statement[1])
 
 def eval_assignment(ctx, assignment):
     if assignment[1][0] == 'identifier':
@@ -87,7 +92,8 @@ def eval_func_call(ctx, expr):
             args += [('null', None)] * (len(targets) - len(args))
         for target, arg in zip(targets, args):
             new_ctx.set(('identifier', target), arg)
-        return eval(new_ctx, body)
+        ret = eval(new_ctx, body)
+        return ret
 
 def init_obj_fields(ctx, obj):
     for key in obj:
@@ -100,13 +106,11 @@ def eval_conditional(ctx, conditional):
     for condition, branch in statements:
         condition = eval_expr(ctx, condition)
         if condition[1]:
-            new_ctx = Context(parent=ctx)
-            return eval(new_ctx, branch)
+            return eval(ctx, branch)
 
 def eval_loop(ctx, loop):
     condition = loop[1]
     statements = loop[2]
-    new_ctx = Context(parent=ctx)
     while eval_expr(ctx, condition)[1]:
         eval(ctx, statements)
 

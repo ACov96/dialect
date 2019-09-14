@@ -1,8 +1,6 @@
-fun count_down (n) {
-    while (n >= 0) {
-          print(n);
-          n = n - 1;
-    }
+fun inc(x) {
+    return x + 1;
 }
 
-count_down(10);
+y = inc(2);
+print(y);

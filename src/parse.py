@@ -56,6 +56,10 @@ def p_fun_def(p):
     '''fun_def : FUN ID LPAREN id_list RPAREN LBRACE statement_list RBRACE'''
     p[0] = ('fun_def', p[2], p[4], p[7])
 
+def p_statement_return(p):
+    '''statement : RETURN expr SEMICOLON'''
+    p[0] = ('return', p[2])
+
 def p_id_list_single(p):
     '''id_list : ID'''
     p[0] = [p[1]]
