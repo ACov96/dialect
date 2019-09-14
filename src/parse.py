@@ -172,7 +172,7 @@ def p_alg_op(p):
     if p[2] == '+':
         p[0] = ('addition', p[1], p[3])
     elif p[2] == '-':
-        p[0] = ('minus', p[1], p[3])
+        p[0] = ('subtraction', p[1], p[3])
     if p[2] == '*':
         p[0] = ('multiply', p[1], p[3])
     if p[2] == '/':

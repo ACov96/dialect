@@ -1,6 +1,10 @@
 from context import Context
 from stdlib import STDLIB
 
+ALG_OPS = {'addition', 'subtraction', 'multiply', 'divide'}
+COMP_OPS = {'eq', 'ne', 'gt', 'gte', 'lt', 'lte'}
+LOGIC_OPS = {'and', 'or', 'not'}
+
 def eval(ctx, statements):
     for statement in statements:
         eval_statement(ctx, statement)
@@ -53,6 +57,8 @@ def eval_expr(ctx, expr):
         return expr
     elif expr[0] == 'access':
         return eval_access(ctx, expr)
+    elif expr[0] in ALG_OPS:
+        return eval_alg_op(ctx, expr)
 
 def eval_access(ctx, expr):
     target = eval_expr(ctx, expr[1])
@@ -108,3 +114,22 @@ def eval_loop(ctx, loop):
 def eval_fun_def(ctx, definition):
     _, fun_id, args, body = definition
     eval_assignment(ctx, ('assignment', ('identifier', fun_id), ('fun', args, body)))
+
+def eval_alg_op(ctx, expr):
+    left = eval_expr(ctx, expr[1])[1]
+    right = eval_expr(ctx, expr[2])[1]
+    if expr[0] == 'addition':
+        data = left + right
+    elif expr[0] == 'subtraction':
+        data = left - right
+    elif expr[0] == 'multiply':
+        data = left * right
+    elif expr[0] == 'divide':
+        data = left / right
+    
+    if isinstance(data, str):
+        return ('string', data)
+    elif isinstance(data, float):
+        return ('number', data)
+    else:
+        return ('null', None)
