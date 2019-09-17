@@ -1,0 +1,18 @@
+# Control flow structures
+
+# Conditionals
+if (false) {
+   print("This statement won't print");
+} elif (true) {
+   print("This statement will print");
+} else {
+   print("Ignore this statement");
+}
+
+# Loops
+# There are only while loops
+x = 0;
+while (x < 10) {
+      x = x + 1;
+}
+print(x);

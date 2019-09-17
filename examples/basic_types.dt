@@ -1,0 +1,32 @@
+# Some examples on the basic types in the language
+# Note: variable names can only contain lower case letters and underscores
+
+# There are only numbers, no floats or ints
+x = 1;
+y = 2.3;
+z = x + y;
+print(z);
+
+# Strings are always made using "'s
+first_name = "Alex";
+last_name = "Covington";
+full_name = first_name + " " + last_name;
+print(full_name);
+
+# Booleans are pretty straightforward
+print(true, false);
+
+# Lists behave similarly to Python lists
+l = [1, "2", [3]];
+l[0] = 100;
+print(l);
+
+# Objects behave similarly to JavaScript objects. 
+# Only use identifiers as the keys for objects, never strings.
+o = { hello: "World" };
+o["foo"] = "bar";
+print(o);
+
+# You can also have null values
+n = null;
+print(n);
