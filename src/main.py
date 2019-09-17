@@ -6,7 +6,6 @@ from context import Context
 
 def main(argv):
     ast = parse(argv[0])
-    print(ast)
     ctx = Context()
     eval(ctx, ast)
     # pprint(ctx._context)

@@ -1,5 +1,9 @@
 from context import Context
+from macro import Macro
 from stdlib import STDLIB
+from util import minify_macro_args
+
+MACRO = Macro()
 
 ALG_OPS = {'addition', 'subtraction', 'multiply', 'divide'}
 COMP_OPS = {'eq', 'neq', 'gt', 'gte', 'lt', 'lte'}
@@ -29,6 +33,10 @@ def eval_statement(ctx, statement):
         return eval_fun_def(ctx, statement)
     elif statement[0] == 'statement_expr':
         return eval_expr(ctx, statement[1])
+    elif statement[0] == 'macro_def':
+        return eval_macro_def(ctx, (statement[1], statement[2]))
+    elif statement[0] == 'macro_call':
+        return eval_macro_call(ctx, statement[1])
 
 def eval_assignment(ctx, assignment):
     data = eval_expr(ctx, assignment[2])
@@ -176,3 +184,13 @@ def eval_logic_op(ctx, expr):
         return ('bool', eval_expr(ctx, expr[1]) or eval_expr(ctx, expr[2]))
     else:
         return ('bool', not eval_expr(ctx, expr[1])[1])
+
+def eval_macro_def(ctx, macro_def):
+    args = minify_macro_args(macro_def[0])
+    MACRO.register_macro(args, macro_def[1])
+
+def eval_macro_call(ctx, macro_call):
+    call = minify_macro_args(macro_call)
+    if MACRO.has_macro(call):
+        statements = MACRO.render_statements(call)
+        return eval(ctx, statements)
