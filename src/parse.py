@@ -113,6 +113,13 @@ def p_l_value_record(p):
     '''l_value : ID fields'''
     p[0] = ('record', ('identifier', p[1]), p[2])
 
+def p_l_value_placeholder(p):
+    '''l_value : PLACEHOLDER'''
+    p[0] = ('placeholder', p[1])
+
+def p_l_value_placeholder_record(p):
+    '''l_value : PLACEHOLDER fields'''
+    p[0] = ('record', ('placeholder', p[1]), p[2])
 def p_fields_single(p):
     '''fields : LBRACKET expr RBRACKET'''
     p[0] = [p[2]]
