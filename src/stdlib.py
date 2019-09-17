@@ -46,6 +46,15 @@ def _print(ctx, args):
     evaluated_args = [format_str(arg) if not isinstance(arg, tuple) else arg[0] for arg in evaluated_args]
     print(' '.join(evaluated_args))
         
+
+def run_sequence(ctx, args):
+    from engine import eval, eval_expr
+    sequence = args[0]
+    if sequence[0] != 'sequence':
+        sequence = eval_expr(ctx, sequence)
+    return eval(ctx, sequence[1])
+
 STDLIB = {
     'print': _print,
+    'run': run_sequence,
 }

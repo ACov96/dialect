@@ -201,6 +201,10 @@ def p_expr_object(p):
     '''expr : LBRACE record_list RBRACE'''
     p[0] = ('object', make_obj(p[2]))
 
+def p_expr_sequence(p):
+    '''expr : LPAREN statement_list RPAREN'''
+    p[0] = ('sequence', p[2])
+
 def p_record_list_single(p):
     '''record_list : ID COLON expr'''
     p[0] = [(p[1], p[3])]

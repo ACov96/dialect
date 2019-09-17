@@ -40,7 +40,7 @@ class Macro:
                     if isinstance(stmt[i], tuple):
                         stmt[i] = list(stmt[i])
                         convert = True
-                    if stmt[i][0] == 'placeholder':
+                    if isinstance(stmt[i], list) and stmt[i][0] == 'placeholder':
                         stmt[i] = ctx.get(stmt[i][1])
                     elif isinstance(stmt[i], list):
                         stmt[i] = _render_statement(stmt[i])

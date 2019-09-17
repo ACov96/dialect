@@ -80,6 +80,8 @@ def eval_expr(ctx, expr):
         return expr
     elif expr[0] == 'access':
         return eval_access(ctx, expr)
+    elif expr[0] == 'sequence':
+        return expr
     elif expr[0] in ALG_OPS:
         return eval_alg_op(ctx, expr)
     elif expr[0] in COMP_OPS:
@@ -91,7 +93,7 @@ def eval_access(ctx, expr):
     target = eval_expr(ctx, expr[1])
     key = eval_expr(ctx, expr[2])
     if target[0] == 'list':
-        target = target[1]
+        target = target[1]['data']
         key = int(key[1])
     else:
         target = target[1]

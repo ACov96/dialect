@@ -1,5 +1,22 @@
-mac HELLO WORLD $var {
-    print("Hello", $var);
+mac FOR $start TO $end DO $body {
+    if ($start < $end) {
+       count = $start;
+       bound = $end;
+    } else {
+       count = $end;
+       bound = $start;
+    }
+
+    while (count < bound) {
+       count = count + 1;
+       run($body);
+    }
 }
 
-HELLO WORLD "Alex";
+FOR 0 TO 10 DO (
+    print("Hello");
+);
+
+FOR 10 TO 0 DO (
+    print("Hello");
+);
