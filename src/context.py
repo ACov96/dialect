@@ -26,3 +26,9 @@ class Context:
         if identifier[1] in self._context or (self.parent is not None and self.parent.check(identifier)):
             return ('bool', True)
         return ('bool', False)
+
+    def delete(self, identifier):
+        if identifier[1] in self._context:
+            del self._context[identifier[1]]
+        elif self.parent is not None and self.parent.check(identifier):
+            self.parent.delete(identifier)

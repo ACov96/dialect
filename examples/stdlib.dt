@@ -7,4 +7,7 @@ o_copy = copy(o);
 o_copy["foo"] = "bar";
 print(o, o_copy);
 
+x = 1;
+print(exists(x));
+delete(x);
 print(exists(x));

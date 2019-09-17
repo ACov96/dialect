@@ -74,6 +74,9 @@ def _copy(ctx, args):
 def exists(ctx, args):
     return ctx.check(args[0])
 
+def delete(ctx, args):
+    return ctx.delete(args[0])
+
 STDLIB = {
     'print': _print,
     'run': run_sequence,
@@ -81,4 +84,5 @@ STDLIB = {
     'type': _type,
     'copy': _copy,
     'exists': exists,
+    'delete': delete,
 }
