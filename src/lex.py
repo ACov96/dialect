@@ -16,9 +16,11 @@ reserved = {
     'or': 'OR',
     'not': 'NOT',
     'mac': 'MAC',
+    'import': 'IMPORT',
 }
 
 tokens = (
+    'IMPORT',
     'MAC',
     'IF',
     'ELIF',

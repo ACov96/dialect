@@ -1,4 +1,5 @@
 import sys
+import os
 from pprint import pprint
 from parse import parse
 from engine import eval
@@ -7,7 +8,8 @@ from context import Context
 def main(argv):
     ast = parse(argv[0])
     # print(ast)
-    ctx = Context()
+    dir_path = os.path.dirname(os.path.realpath(argv[0]))
+    ctx = Context(__path__=dir_path)
     eval(ctx, ast)
     # pprint(ctx._context)
     # x = ctx._context['l'][1]

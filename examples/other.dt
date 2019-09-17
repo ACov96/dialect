@@ -1,0 +1,7 @@
+mac FOR $var IS $lower TO $upper DO $body {
+    $var = $lower;
+    while ($var < $upper) {
+       run($body);
+       $var = $var + 1;
+    }
+}

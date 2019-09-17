@@ -1,8 +1,12 @@
+from macro import Macro
+
 class Context:
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, __path__=None):
         self.parent = parent
         self._context = {}
         self.ret_val = None
+        self.__path__ = __path__ 
+        self.macro = Macro()
 
     def get(self, key):
         if key in self._context:

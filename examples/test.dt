@@ -1,22 +1,5 @@
-mac FOR $start TO $end DO $body {
-    if ($start < $end) {
-       count = $start;
-       bound = $end;
-    } else {
-       count = $end;
-       bound = $start;
-    }
+import "./other.dt";
 
-    while (count < bound) {
-       count = count + 1;
-       run($body);
-    }
-}
-
-FOR 0 TO 10 DO (
-    print("Hello");
-);
-
-FOR 10 TO 0 DO (
-    print("Hello");
+FOR i IS 0 TO 10 DO (
+    print(i);
 );

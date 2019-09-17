@@ -24,6 +24,10 @@ def p_empty(p):
     '''empty :'''
     pass
 
+def p_statement_import(p):
+    '''statement : IMPORT STRING SEMICOLON'''
+    p[0] = ('import', p[2])
+
 def p_statement_assignment(p):
     '''statement : assignment SEMICOLON'''
     p[0] = p[1]
