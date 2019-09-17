@@ -54,7 +54,15 @@ def run_sequence(ctx, args):
         sequence = eval_expr(ctx, sequence)
     return eval(ctx, sequence[1])
 
+def length(ctx, args):
+    from engine import eval_expr
+    expr = eval_expr(ctx, args[0])
+    if expr[0] == 'list':
+        return ('number', float(len(expr[1]['data'])))
+    return ('number', float(len(expr[1])))
+
 STDLIB = {
     'print': _print,
     'run': run_sequence,
+    'length': length,
 }
