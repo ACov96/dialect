@@ -1,3 +1,5 @@
-l = { a: "Hello", b: { c: 0 } };
-l["b"]["c"] = 1;
-print(l);
+mac HELLO WORLD $var {
+    print("Hello", $var);
+}
+
+HELLO WORLD "Alex";

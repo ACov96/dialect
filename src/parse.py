@@ -36,6 +36,14 @@ def p_statement_expr(p):
     '''statement : expr SEMICOLON'''
     p[0] = ('statement_expr', p[1])
 
+def p_statement_macro_def(p):
+    '''statement : macro_def'''
+    p[0] = p[1]
+
+def p_statement_macro_call(p):
+    '''statement : macro_call'''
+    p[0] = p[1]
+
 def p_assignment(p):
     '''assignment : l_value EQUAL r_value'''
     p[0] = ('assignment', p[1], p[3])
@@ -206,6 +214,10 @@ def p_expr_comp_op(p):
     '''expr : comp_op'''
     p[0] = p[1]
 
+def p_expr_placeholder(p):
+    '''expr : PLACEHOLDER'''
+    p[0] = ('placeholder', p[1])
+
 def p_comp_op_eq(p):
     '''comp_op : expr EQUAL EQUAL expr'''
     p[0] = ('eq', p[1], p[4])
@@ -245,6 +257,42 @@ def p_log_op_or(p):
 def p_log_op_not(p):
     '''log_op : NOT expr'''
     p[0] = ('not', p[2])
+
+def p_macro_def(p):
+    '''macro_def : MAC macro_def_arg_list LBRACE statement_list RBRACE'''
+    p[0] = ('macro_def', p[2], p[4])
+
+def p_macro_def_arg_list_start_atom(p):
+    '''macro_def_arg_list : ATOM macro_def_arg_list_rec'''
+    p[0] = [('atom', p[1])] + p[2]
+
+def p_macro_def_arg_list_rec_placeholder(p):
+    '''macro_def_arg_list_rec : PLACEHOLDER macro_def_arg_list_rec'''
+    p[0] = [('placeholder', p[1])] + p[2]
+
+def p_macro_def_arg_list_rec_atom(p):
+    '''macro_def_arg_list_rec : ATOM macro_def_arg_list_rec'''
+    p[0] = [('atom', p[1])] + p[2]
+
+def p_macro_def_arg_list_rec_empty(p):
+    '''macro_def_arg_list_rec : empty'''
+    p[0] = []
+
+def p_macro_call_atom_start(p):
+    '''macro_call : ATOM macro_arg_list SEMICOLON'''
+    p[0] = ('macro_call', [('atom', p[1])] + p[2])
+
+def p_macro_call_arg_list_atom(p):
+    '''macro_arg_list : ATOM macro_arg_list'''
+    p[0] = [('atom', p[1])] + p[2]
+
+def p_macro_call_arg_list_expr(p):
+    '''macro_arg_list : expr macro_arg_list'''
+    p[0] = [p[1]] + p[2]
+
+def p_macro_call_arg_list_empty(p):
+    '''macro_arg_list : empty'''
+    p[0] = []
 
 def p_error(p):
     print('Syntax error\n', p)

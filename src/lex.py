@@ -15,9 +15,11 @@ reserved = {
     'and': 'AND',
     'or': 'OR',
     'not': 'NOT',
+    'mac': 'MAC',
 }
 
 tokens = (
+    'MAC',
     'IF',
     'ELIF',
     'ELSE',
@@ -51,6 +53,8 @@ tokens = (
     'GT',
     'LT',
     'ID',
+    'ATOM',
+    'PLACEHOLDER',
 )
 
 t_NULL = r'null'
@@ -71,6 +75,8 @@ t_COLON = r':'
 t_BANG = r'!'
 t_GT = r'>'
 t_LT = r'<'
+t_ATOM = r'[A-Z]+'
+t_PLACEHOLDER = r'\$[a-z]+'
 
 def t_NUMBER(t):
     r'[0-9]+(\.[0-9]+)?'
