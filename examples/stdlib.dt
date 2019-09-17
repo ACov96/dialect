@@ -6,3 +6,5 @@ o = { hello: "world" };
 o_copy = copy(o);
 o_copy["foo"] = "bar";
 print(o, o_copy);
+
+print(exists(x));

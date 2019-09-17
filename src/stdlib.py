@@ -71,10 +71,14 @@ def _copy(ctx, args):
     expr = eval_expr(ctx, args[0])
     return deepcopy(expr)
 
+def exists(ctx, args):
+    return ctx.check(args[0])
+
 STDLIB = {
     'print': _print,
     'run': run_sequence,
     'length': length,
     'type': _type,
     'copy': _copy,
+    'exists': exists,
 }

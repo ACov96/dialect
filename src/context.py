@@ -21,3 +21,8 @@ class Context:
 
     def flag_return(self, val):
         self.ret_val = val
+
+    def check(self, identifier):
+        if identifier[1] in self._context or (self.parent is not None and self.parent.check(identifier)):
+            return ('bool', True)
+        return ('bool', False)
