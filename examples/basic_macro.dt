@@ -16,3 +16,16 @@ mac SET $var TO $val {
 
 SET x TO 3;
 print(x);
+
+# Here's how you might define a for-loop
+mac FOR $var IS $lower TO $upper DO $body {
+    $var = $lower;
+    while ($var < $upper) {
+       run($body);
+       $var = $var + 1;
+    }
+}
+
+FOR i IS 0 TO 10 DO (
+    print(i);
+);
