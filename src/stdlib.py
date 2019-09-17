@@ -10,7 +10,7 @@ def _print(ctx, args):
         elif isinstance(x, float):
             return str(x)
         elif isinstance(x, str):
-            return '"{}"'.format(x)
+            return x
         elif isinstance(x, bool):
             return 'true' if x else 'false'
         elif x is None:
