@@ -66,9 +66,15 @@ def _type(ctx, args):
     expr = eval_expr(ctx, args[0])
     return ('string', expr[0])
 
+def _copy(ctx, args):
+    from engine import eval_expr
+    expr = eval_expr(ctx, args[0])
+    return deepcopy(expr)
+
 STDLIB = {
     'print': _print,
     'run': run_sequence,
     'length': length,
     'type': _type,
+    'copy': _copy,
 }

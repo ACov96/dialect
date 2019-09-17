@@ -1,3 +1,8 @@
 l = [1, 2, 3];
 print(length(l));
 print(type(l));
+
+o = { hello: "world" };
+o_copy = copy(o);
+o_copy["foo"] = "bar";
+print(o, o_copy);
