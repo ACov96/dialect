@@ -1,0 +1,8 @@
+# We can import globally defined variables, functions, and macros
+# from other files. We can't choose what get's imported yet, so
+# we always end up importing all globally defined identifiers.
+import "./basic_macro.dt";
+
+FOR i IS 0 TO 10 DO (
+    print(i);
+);
