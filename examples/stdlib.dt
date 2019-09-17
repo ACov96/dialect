@@ -1,2 +1,3 @@
 l = [1, 2, 3];
 print(length(l));
+print(type(l));

@@ -61,8 +61,14 @@ def length(ctx, args):
         return ('number', float(len(expr[1]['data'])))
     return ('number', float(len(expr[1])))
 
+def _type(ctx, args):
+    from engine import eval_expr
+    expr = eval_expr(ctx, args[0])
+    return ('string', expr[0])
+
 STDLIB = {
     'print': _print,
     'run': run_sequence,
     'length': length,
+    'type': _type,
 }
