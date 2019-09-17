@@ -180,7 +180,7 @@ def p_alg_op(p):
 
 def p_expr_list(p):
     '''expr : LBRACKET arg_list RBRACKET'''
-    p[0] = ('list', p[2])
+    p[0] = ('list', { 'data': p[2] })
 
 def p_expr_object(p):
     '''expr : LBRACE record_list RBRACE'''

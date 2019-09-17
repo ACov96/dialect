@@ -8,6 +8,7 @@ def main(argv):
     ast = parse(argv[0])
     ctx = Context()
     eval(ctx, ast)
+    # pprint(ctx._context)
     # x = ctx._context['l'][1]
     # print(x, hex(id(x)))
     # pprint(hex(id(ctx._context['l'][1][2][1][0])))

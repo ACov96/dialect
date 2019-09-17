@@ -13,6 +13,10 @@ def eval(ctx, statements):
             return ret
         else:
             eval_statement(ctx, statement)
+            if ctx.ret_val is not None:
+                ret = ctx.ret_val
+                ctx.flag_return(None)
+                return ret
 
 def eval_statement(ctx, statement):
     if statement[0] == 'assignment':
@@ -27,17 +31,24 @@ def eval_statement(ctx, statement):
         return eval_expr(ctx, statement[1])
 
 def eval_assignment(ctx, assignment):
+    data = eval_expr(ctx, assignment[2])
     if assignment[1][0] == 'identifier':
-        ctx.set(assignment[1], eval_expr(ctx, assignment[2]))
+        ctx.set(assignment[1], data)
     elif assignment[1][0] == 'record':
-        target = eval_expr(ctx, assignment[1][1])
-        fields = [eval_expr(ctx, field)[1] for field in assignment[1][2]]
-        for i in range(len(fields)):
-            if i == len(fields) - 1:
-                # We are on the last field
-                target[1][int(fields[i]) if isinstance(fields[i], float) else fields[i]] = eval_expr(ctx, assignment[2])
+        all_fields = [eval_expr(ctx, arg)[1] for arg in assignment[1][2]]
+        def _recreate(cur_target, fields):
+            if len(fields) == 1:
+                if cur_target[0] == 'list':
+                    cur_target[1]['data'][int(fields[0])] = data
+                else:
+                    cur_target[1][fields[0]] = data
             else:
-                target = target[1][int(fields[i]) if isinstance(fields[i], float) else fields[i]]
+                if cur_target[0] == 'list':
+                    cur_target[1]['data'][int(fields[0])] = _recreate(cur_target[1]['data'][int(fields[0])], fields[1:])
+                else:
+                    cur_target[1][fields[0]] = _recreate(cur_target[1][fields[0]], fields[1:])
+            return cur_target
+        ctx.set(assignment[1][1], _recreate(ctx.get(assignment[1][1][1]), all_fields))
 
 def eval_expr(ctx, expr):
     # print('EVALUATING EXPRESSION', expr)
@@ -46,7 +57,7 @@ def eval_expr(ctx, expr):
     elif expr[0] == 'number':
         return expr
     elif expr[0] == 'list':
-        return ('list', [eval_expr(ctx, el) for el in expr[1]])
+        return ('list', { 'data': [eval_expr(ctx, el) for el in expr[1]['data']] })
     elif expr[0] == 'object':
         return ('object', init_obj_fields(ctx, expr[1]))
     elif expr[0] == 'func_call':
@@ -113,6 +124,10 @@ def eval_loop(ctx, loop):
     statements = loop[2]
     while eval_expr(ctx, condition)[1]:
         eval(ctx, statements)
+        if ctx.ret_val is not None:
+            ret = ctx.ret_val
+            ctx.flag_return(None)
+            return ret
 
 def eval_fun_def(ctx, definition):
     _, fun_id, args, body = definition

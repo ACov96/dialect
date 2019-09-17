@@ -22,7 +22,7 @@ def _print(ctx, args):
 
     def minify_list(l):
         l = deepcopy(l)
-        mini = [minify_list(el[1]) if el[0] == 'list' else el for el in l]
+        mini = [minify_list(el[1]['data']) if el[0] == 'list' else el for el in l]
         mini = [minify_dict(el[1]) if el[0] == 'object' else el for el in mini]
         mini = [format_str(el[1]) if isinstance(el, tuple) else el for el in mini]
         return '[{}]'.format(', '.join(mini))
@@ -40,8 +40,7 @@ def _print(ctx, args):
                 d[key] = d[key][1]
         return format_str(d)
                 
-
-    evaluated_args = [eval_expr(ctx, arg)[1] for arg in args]
+    evaluated_args = [eval_expr(ctx, arg)[1] if eval_expr(ctx, arg)[0] != 'list' else eval_expr(ctx, arg)[1]['data'] for arg in args]
     evaluated_args = [(minify_list(arg),) if isinstance(arg, list) else arg for arg in evaluated_args]
     evaluated_args = [(minify_dict(arg),) if isinstance(arg, dict) else arg for arg in evaluated_args]
     evaluated_args = [format_str(arg) if not isinstance(arg, tuple) else arg[0] for arg in evaluated_args]
