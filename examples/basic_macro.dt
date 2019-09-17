@@ -1,0 +1,18 @@
+# Defining and using macros
+
+# Basic macro where we use placeholders like arguments
+mac HELLO $person {
+    print("Hello", $person);
+}
+
+HELLO "Alex";
+HELLO "Marcus";
+
+# Macros don't evaluate expressions until they've rendered
+# all of the statements, so we can do this
+mac SET $var TO $val {
+    $var = $val;
+}
+
+SET x TO 3;
+print(x);
