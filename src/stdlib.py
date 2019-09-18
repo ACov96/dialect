@@ -83,6 +83,11 @@ def keys(ctx, args):
     obj_keys = [('string', k) for k in list(expr[1].keys())]
     return ('list', { 'data': obj_keys})
 
+def _list(ctx, args):
+    from engine import eval_expr
+    expr = eval_expr(ctx, args[0])
+    return ('list', { 'data': [('null', None)] * int(expr[1])})
+
 STDLIB = {
     'print': _print,
     'run': run_sequence,
@@ -92,4 +97,5 @@ STDLIB = {
     'exists': exists,
     'delete': delete,
     'keys': keys,
+    'list': _list,
 }
