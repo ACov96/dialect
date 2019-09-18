@@ -77,6 +77,12 @@ def exists(ctx, args):
 def delete(ctx, args):
     return ctx.delete(args[0])
 
+def keys(ctx, args):
+    from engine import eval_expr
+    expr = eval_expr(ctx, args[0])
+    obj_keys = [('string', k) for k in list(expr[1].keys())]
+    return ('list', { 'data': obj_keys})
+
 STDLIB = {
     'print': _print,
     'run': run_sequence,
@@ -85,4 +91,5 @@ STDLIB = {
     'copy': _copy,
     'exists': exists,
     'delete': delete,
+    'keys': keys,
 }

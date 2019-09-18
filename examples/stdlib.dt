@@ -11,3 +11,5 @@ x = 1;
 print(exists(x));
 delete(x);
 print(exists(x));
+
+print(keys(o));
