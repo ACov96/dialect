@@ -23,7 +23,7 @@ class Macro:
         return True
 
     def render_statements(self, statement):
-        from context import Context
+        from .context import Context
         ctx = Context()
         if self.has_macro(statement):
             macro_args, macro_statements = self._find_macro(statement)

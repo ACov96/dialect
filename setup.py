@@ -5,7 +5,7 @@ with open('requirements.txt', 'r') as f:
 
 setup(
     name = 'dialect',
-    version = '0.1.3',
+    version = '0.1.11',
     author = 'Alex Covington',
     author_email = 'alex@covington.tech',
     url = 'https://github.com/ACov96/dialect/tree/master',

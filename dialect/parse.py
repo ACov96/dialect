@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 import ply.lex as l
-from lex import tokens, new_lexer
-from util import make_obj
+from .lex import tokens, new_lexer
+from .util import make_obj
 
 precedence = (
     ('left', 'PLUS', 'MINUS'),

@@ -1,9 +1,9 @@
 import sys
 import os
 from pprint import pprint
-from parse import parse
-from engine import eval
-from context import Context
+from .parse import parse
+from .engine import eval
+from .context import Context
 
 def main():
     if (len(sys.argv) < 2):

@@ -1,8 +1,8 @@
 from copy import deepcopy
-from context import Context
+from .context import Context
 
 def _print(ctx, args):
-    from engine import eval_expr
+    from .engine import eval_expr
 
     def format_str(x):
         if isinstance(x, float) and x.is_integer():
@@ -48,26 +48,26 @@ def _print(ctx, args):
         
 
 def run_sequence(ctx, args):
-    from engine import eval, eval_expr
+    from .engine import eval, eval_expr
     sequence = args[0]
     if sequence[0] != 'sequence':
         sequence = eval_expr(ctx, sequence)
     return eval(ctx, sequence[1])
 
 def length(ctx, args):
-    from engine import eval_expr
+    from .engine import eval_expr
     expr = eval_expr(ctx, args[0])
     if expr[0] == 'list':
         return ('number', float(len(expr[1]['data'])))
     return ('number', float(len(expr[1])))
 
 def _type(ctx, args):
-    from engine import eval_expr
+    from .engine import eval_expr
     expr = eval_expr(ctx, args[0])
     return ('string', expr[0])
 
 def _copy(ctx, args):
-    from engine import eval_expr
+    from .engine import eval_expr
     expr = eval_expr(ctx, args[0])
     return deepcopy(expr)
 
@@ -78,13 +78,13 @@ def delete(ctx, args):
     return ctx.delete(args[0])
 
 def keys(ctx, args):
-    from engine import eval_expr
+    from .engine import eval_expr
     expr = eval_expr(ctx, args[0])
     obj_keys = [('string', k) for k in list(expr[1].keys())]
     return ('list', { 'data': obj_keys})
 
 def _list(ctx, args):
-    from engine import eval_expr
+    from .engine import eval_expr
     expr = eval_expr(ctx, args[0])
     return ('list', { 'data': [('null', None)] * int(expr[1])})
 

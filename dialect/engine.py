@@ -1,9 +1,9 @@
 import os
-from context import Context
-from macro import Macro
-from stdlib import STDLIB
-from util import minify_macro_args
-from parse import parse
+from .context import Context
+from .macro import Macro
+from .stdlib import STDLIB
+from .util import minify_macro_args
+from .parse import parse
 
 ALG_OPS = {'addition', 'subtraction', 'multiply', 'divide'}
 COMP_OPS = {'eq', 'neq', 'gt', 'gte', 'lt', 'lte'}

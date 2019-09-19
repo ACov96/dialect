@@ -1,4 +1,4 @@
-from macro import Macro
+from .macro import Macro
 
 class Context:
     def __init__(self, parent=None, __path__=None):
