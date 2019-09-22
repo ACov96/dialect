@@ -1,0 +1,13 @@
+mac WITH $body {
+    fun __with_scope__() {
+        run($body);
+    }
+    __with_scope__();
+    delete(__with_scope__);
+}
+
+WITH (
+     x = 1;
+     print(x);
+);
+print(exists(x));

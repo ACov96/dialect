@@ -11,6 +11,7 @@ def main():
         exit(1)
 
     ast = parse(sys.argv[1])
+    # pprint(ast)
     dir_path = os.path.dirname(os.path.realpath(sys.argv[1]))
     ctx = Context(__path__=dir_path)
     eval(ctx, ast)

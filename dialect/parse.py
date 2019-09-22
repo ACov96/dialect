@@ -2,6 +2,12 @@ import ply.yacc as yacc
 import ply.lex as l
 from .lex import tokens, new_lexer
 from .util import make_obj
+from .error import syntax_error
+
+class ParserError(Exception):
+    def __init__(self, msg, tok):
+        super().__init__(msg)
+        self.tok = tok
 
 precedence = (
     ('left', 'PLUS', 'MINUS'),
@@ -164,6 +170,10 @@ def p_expr_parens(p):
     '''expr : LPAREN expr RPAREN'''
     p[0] = p[2]
 
+def p_expr_anonymous_fun(p):
+    '''expr : anonymous_fun'''
+    p[0] = p[1]
+
 def p_func_call(p):
     ''' func_call : ID LPAREN arg_list RPAREN'''
     p[0] = ('func_call', p[1], p[3])
@@ -309,13 +319,22 @@ def p_macro_call_arg_list_empty(p):
     '''macro_arg_list : empty'''
     p[0] = []
 
+def p_anonymous_fun(p):
+    '''anonymous_fun : LPAREN id_list RPAREN LBRACE statement_list RBRACE'''
+    p[0] = ('fun', p[2], p[5])
+
 def p_error(p):
-    print('Syntax error\n', p)
+    raise ParserError('Syntax error', p)
 
 def parse(file_name):
     with open(file_name, 'r') as f:
         file_content = f.read()
         lexer = new_lexer()
         parser = yacc.yacc()
-        statements = parser.parse(file_content)
+        try:
+            statements = parser.parse(file_content,tracking=True)
+        except ParserError as err:
+            syntax_error(file_name, err.tok.lineno, err.tok.lexpos)
+            print(err.tok.lexpos)
+            exit(1)
         return statements

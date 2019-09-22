@@ -1,3 +1,4 @@
+import re
 from copy import deepcopy
 from .context import Context
 
@@ -24,6 +25,7 @@ def _print(ctx, args):
         l = deepcopy(l)
         mini = [minify_list(el[1]['data']) if el[0] == 'list' else el for el in l]
         mini = [minify_dict(el[1]) if el[0] == 'object' else el for el in mini]
+        mini = ['[function]' if el[0] == 'fun' else el for el in mini]
         mini = [format_str(el[1]) if isinstance(el, tuple) else el for el in mini]
         return '[{}]'.format(', '.join(mini))
 
@@ -36,13 +38,17 @@ def _print(ctx, args):
                 d[key] = minify_list(d[key][1])
             elif d[key][0] == 'number' and d[key][1].is_integer():
                 d[key] = int(d[key][1])
+            elif d[key][0] == 'fun':
+                d[key] = '[function]'
             else:
                 d[key] = d[key][1]
         return format_str(d)
                 
-    evaluated_args = [eval_expr(ctx, arg)[1] if eval_expr(ctx, arg)[0] != 'list' else eval_expr(ctx, arg)[1]['data'] for arg in args]
+    print(eval_expr(ctx, args[0]))
+    evaluated_args = [eval_expr(ctx, arg)[1] if eval_expr(ctx, arg)[0] != 'list' and eval_expr(ctx, arg)[0] != 'fun' else eval_expr(ctx, arg)[1]['data'] if eval_expr(ctx, arg)[0] != 'fun' else eval_expr(ctx, arg) for arg in args]
     evaluated_args = [(minify_list(arg),) if isinstance(arg, list) else arg for arg in evaluated_args]
     evaluated_args = [(minify_dict(arg),) if isinstance(arg, dict) else arg for arg in evaluated_args]
+    evaluated_args = ['[function]' if isinstance(arg, tuple) and arg[0] == 'fun' else arg for arg in evaluated_args]
     evaluated_args = [format_str(arg) if not isinstance(arg, tuple) else arg[0] for arg in evaluated_args]
     print(' '.join(evaluated_args))
         
@@ -88,6 +94,16 @@ def _list(ctx, args):
     expr = eval_expr(ctx, args[0])
     return ('list', { 'data': [('null', None)] * int(expr[1])})
 
+def symbol_to_string(ctx, args):
+    return ('string', args[0][1])
+
+def string_to_symbol(ctx, args):
+    match = re.match('[a-z_][a-z_0-9]*', args[0][1])
+    if match:
+        return ('identifier', args[0][1])
+    else:
+        return ('null', None)
+
 STDLIB = {
     'print': _print,
     'run': run_sequence,
@@ -98,4 +114,6 @@ STDLIB = {
     'delete': delete,
     'keys': keys,
     'list': _list,
+    'symbol_to_string': symbol_to_string,
+    'string_to_symbol': string_to_symbol,
 }

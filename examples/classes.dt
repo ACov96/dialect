@@ -1,0 +1,19 @@
+mac DEFINE CLASS $classname AS $proto {
+    if (not exists(__prototypes)) {
+       __prototypes = {};
+    }
+    __prototypes[symbol_to_string($classname)] = copy($proto);
+}
+
+mac NEW $classname NAMED $target {
+    $target = copy(__prototypes[symbol_to_string($classname)]);
+}
+
+foo = (x) {
+    print("Hi");
+};
+print(foo);
+# DEFINE CLASS test AS { foo: "bar" };
+# NEW test NAMED t;
+# print(t);
+# print(symbol_to_string(t));
